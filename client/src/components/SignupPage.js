@@ -1,4 +1,4 @@
-//navigate ve route olayını yapamadım genel 
+//navigate ve route olayını yapamadım genel.
 // bıraktım bu haliyle tasarım gözüksün bi şey diye öyleisne oluştuğum bi sayfa
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; 
