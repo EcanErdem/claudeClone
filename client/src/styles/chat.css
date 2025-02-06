@@ -1,0 +1,245 @@
+/* Genel stil */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f7fc;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center; /* Ortalamak için ekledik */
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Projeler Listesi */
+.App {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1200px; /* Uygulama genişliği maksimum 1200px */
+  margin: 0 auto;
+}
+
+.projects-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;  /* Projeler kısmı ortalanmış ve genişliği sınırlandırılmış */
+  margin-bottom: 30px;
+}
+
+.projects-container {
+  display: flex;
+  flex-wrap: nowrap; /* Yatayda kaydırma */
+  gap: 15px;
+  overflow-x: auto; /* Yatay kaydırma çubuğu */
+  padding: 10px;
+  width: 100%;
+}
+
+.project-card {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  flex-shrink: 0; /* Yatay kaydırmada kartın küçülmesini engeller */
+  min-width: 200px; /* Kartın minimum genişliği */
+}
+
+.project-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.project-card.selected {
+  border: 2px solid #007bff;
+}
+
+.project-card h3 {
+  font-size: 16px;
+  margin: 10px 0;
+}
+
+.project-card p {
+  font-size: 14px;
+  color: #555;
+}
+
+.delete-button {
+  background-color: #f44336;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.delete-button:hover {
+  background-color: #d32f2f;
+}
+
+/* Yeni proje ekleme butonu */
+.add-project-button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.add-project-button:hover {
+  background-color: #388e3c;
+}
+
+/* Yeni proje formu */
+.add-project-form {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.add-project-form input {
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 200px;
+}
+
+.add-project-form button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.add-project-form button:nth-child(1) {
+  background-color: #4caf50;
+  color: white;
+}
+
+.add-project-form button:nth-child(2) {
+  background-color: #f44336;
+  color: white;
+}
+
+.add-project-form button:hover {
+  opacity: 0.8;
+}
+
+/* Chatbox */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  max-width: 900px; 
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow-y: auto; /*mesaj gelince kayması için */
+  overflow-x: hidden;
+  height: 500px; 
+}
+
+.project-title {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.project-title h2 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Mesajlar */
+.chat-container .message {
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 100%;
+}
+
+.chat-container .message.user {
+  margin-right: 15px;
+  align-items: flex-end;
+}
+
+.chat-container .message.assistant {
+  margin-left: 15px;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.message p {
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 80%;
+}
+
+.message.user p {
+  background-color: #4caf50;
+  color: white;
+}
+
+.message.bot p {
+  background-color: #f1f1f1;
+  color: #333;
+}
+
+/* Mesaj kutusu */
+.input-box {
+  display: flex;
+  width: 100%;
+  max-width: 900px;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.input-box input {
+  width: 85%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.input-box button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.input-box button:hover {
+  background-color: #0056b3;
+}
+
+
+.projects-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.projects-container::-webkit-scrollbar-thumb {
+  background-color: #007bff;
+  border-radius: 10px;
+}
+
+.projects-container::-webkit-scrollbar-track {
+  background-color: #f4f7fc;
+}

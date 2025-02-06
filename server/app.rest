@@ -1,0 +1,51 @@
+POST http://localhost:3001/auth/register
+Content-Type: application/json
+
+{
+    "email": "kayraparlak@gmail.com",
+    "password": "123456"
+}
+
+###
+
+POST http://localhost:3001/auth/login
+Content-Type: application/json
+
+{
+    "email": "kayraparlak@gmail.com",
+    "password": "123456"
+}
+
+###
+
+POST http://localhost:3001/chat/newChat
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTMxZjUxYWYzMjQ5OTVkYWFmZDcwZCIsImlhdCI6MTczODc1Nzc3NX0.1Ub2D0fs7ef6wLJtuEmQ1YVf_jRCHJ8hdH8bVV6ZRFE
+
+{
+    "userMessage": "Merhaba, nasılsınız?"
+}
+
+###
+
+GET http://localhost:3001/chat?chatUrl=da8db0ac0fb17c636f864a149dbc793e8db2998d
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTMxZjUxYWYzMjQ5OTVkYWFmZDcwZCIsImlhdCI6MTczODc1Nzc3NX0.1Ub2D0fs7ef6wLJtuEmQ1YVf_jRCHJ8hdH8bVV6ZRFE
+
+###
+POST http://localhost:3001/chat?chatUrl=da8db0ac0fb17c636f864a149dbc793e8db2998d
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTMxZjUxYWYzMjQ5OTVkYWFmZDcwZCIsImlhdCI6MTczODc0NDk0Mn0.haE6nZ6Q5HAdT7_1Kk7Q2ewpOgqcHTTexAu8bIcz3hY
+Content-Type: application/json
+
+{
+    "userMessage": "Ben de iyiyim. Teşekkür Ederim."
+}
+
+
+###
+POST http://localhost:3001/chat?chatUrl=da8db0ac0fb17c636f864a149dbc793e8db2998d
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTMxZjUxYWYzMjQ5OTVkYWFmZDcwZCIsImlhdCI6MTczODc1Nzc3NX0.1Ub2D0fs7ef6wLJtuEmQ1YVf_jRCHJ8hdH8bVV6ZRFE
+Content-Type: application/json
+
+{
+    "userMessage": "16+20-1000*56%43/2*4 kaç eder?"
+}
