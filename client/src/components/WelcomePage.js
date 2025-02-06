@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import '../styles/welcome.css';
+import { useSelector } from 'react-redux';
 
 const WelcomePage = ({ onStartChat }) => {
-  const [showButtons, setShowButtons] = useState(false);
+  const isAuth = Boolean(useSelector((state)=>state.token))
 
-  const handleMouseEnter = () => {
+  //const [showButtons, setShowButtons] = useState(false);
+
+ /* const handleMouseEnter = () => {
     setShowButtons(true);
   };
 
   const handleMouseLeave = () => {
     setShowButtons(false);
-  };
+  }; */
 
   const handleLogin = () => {
     window.location.href = '/login'; // Login sayfasına yönlendirme
@@ -24,17 +27,17 @@ const WelcomePage = ({ onStartChat }) => {
   return (
     <div 
       className="welcome-page" 
-      onMouseEnter={handleMouseEnter} 
-      onMouseLeave={handleMouseLeave}
     >
       <div className="welcome-content">
         <h1>Claude Clone</h1>
         <p>Yapay zeka destekli sohbet deneyimi</p>
-        <button className="start-btn" onClick={onStartChat}>Sohbete Başla</button>
+        {isAuth && (
+          <button className="start-btn" onClick={onStartChat}>Sohbete Başla</button>
+        )} 
       </div>
 
       
-      {showButtons && (
+      {!isAuth && (
         <div className="additional-buttons">
           <button className="auth-button" onClick={handleLogin}>Login</button>
           <button className="auth-button" onClick={handleSignup}>Sign Up</button>

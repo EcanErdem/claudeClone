@@ -45,7 +45,7 @@ export const getChat = async (req,res)=>{
 
 export const getAllChat = async (req,res)=>{
     try{
-        const chat = await Chat.find();
+        const chat = await Chat.find({user:req.query.user});
         res.status(200).json(chat);
     }catch(err){
         res.status(500).json({err:err.message});
@@ -54,7 +54,6 @@ export const getAllChat = async (req,res)=>{
 
 export const newMessage = async (req,res)=>{
     try{
-
         const chat = await Chat.findOne({chatUrl:req.body.chatUrl});
         chat.messages.push({role:"user", content:req.body.userMessage});
         const response = await msg(chat.messages.map(({role,content})=>({role,content}))); 

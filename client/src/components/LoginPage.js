@@ -3,18 +3,32 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // useNavigate kullanıldı
 import '../styles/loginPage.css';
+import { setLogin } from "../state";
+import { useDispatch } from "react-redux";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate(); // Burda patlıyo galiba 
+  const dispatch = useDispatch();
+  const navigate = useNavigate(); // useNavigate kullanıldı
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Burada login işlemleri yapılacak
-    // Eğer giriş başarılıysa, yönlendirme yapılabilir
-    console.log("Giriş yapılıyor...");
-    // navigate("/dashboard"); // Örneğin dashboard'a yönlendirme
+    const loginResponse = await fetch("http://localhost:3001/auth/login",{
+      method:"POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({email:email,password:password})
+    })
+    const loggedIn= await loginResponse.json();
+    if(loggedIn){
+      dispatch(setLogin({
+        user:loggedIn.user,
+        token:loggedIn.token
+      }))
+    }
+    navigate("/");
   };
 
   return (

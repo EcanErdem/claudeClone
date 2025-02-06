@@ -10,13 +10,28 @@ const SignupPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate(); 
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       alert("Şifreler uyuşmuyor!");
       return;
+    } else{
+      const newSignUp = {
+        email: email,
+        password: password,
+      }
+
+      const signupResponse = await fetch("http://localhost:3001/auth/register",{
+        method:"POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newSignUp)
+      })
+      const newSignUpAll = await signupResponse.json();
+      navigate("/login");
     }
-    
+   
     console.log("Kayıt yapılıyor...");
 
   };
