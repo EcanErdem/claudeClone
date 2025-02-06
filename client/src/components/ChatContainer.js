@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import Message from './Message';
 import '../styles/chat.css';
-
+//a
 const ChatContainer = ({ messages, projectName }) => {
   const chatEndRef = useRef(null);
 
