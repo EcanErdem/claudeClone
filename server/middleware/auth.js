@@ -6,6 +6,7 @@ export const verifyToken = (req,res,next) => {
         if(!token) return res.status(403).json("Access Denied");
 
         if(token.startsWith("Bearer ")){
+            console.log("Bearer found");
             token = token.slice(7,token.length).trimLeft();
         }
 

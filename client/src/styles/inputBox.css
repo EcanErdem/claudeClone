@@ -19,6 +19,11 @@
   font-size: 14px;
 }
 
+.input-box  input:disabled{
+  background-color: #FFAB91;
+  cursor: not-allowed;
+}
+
 .input-box button {
   background-color: #FF5722;
   color: white;
@@ -27,6 +32,12 @@
   border-radius: 25px;
   cursor: pointer;
   font-size: 14px;
+}
+
+.input-box button:disabled{
+  background-color: #FFAB91;
+  cursor: not-allowed;
+
 }
 
 .input-box button:hover {
