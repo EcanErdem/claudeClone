@@ -1,49 +1,85 @@
-/* Login sayfasının temel stili */
-.login-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #FF5722; /* Arka plan rengi */
-    color: white;
-    font-family: Arial, sans-serif;
-  }
-  
+/* Login Sayfası Modern ve Responsive Stil */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #FF6F61, #D84315);
+  font-family: 'Poppins', sans-serif;
+}
+
+.login-container {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 380px;
+  width: 90%;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.login-container h1 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.login-container input:focus {
+  border-color: #FF5722;
+  outline: none;
+  box-shadow: 0 0 8px rgba(255, 87, 34, 0.5);
+}
+
+.login-container button {
+  width: 100%;
+  padding: 12px;
+  background: #FF5722;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.login-container button:hover {
+  background: #D84315;
+}
+
+/* Responsive Tasarım */
+@media (max-width: 480px) {
   .login-container {
-    background: rgba(255, 255, 255, 0.8); /* Hafif opak beyaz arka plan */
-    padding: 40px;
-    border-radius: 10px;
-    max-width: 400px;
-    width: 100%;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    width: 95%;
   }
-  
   .login-container h1 {
-    text-align: center;
-    margin-bottom: 20px;
+    font-size: 22px;
   }
-  
-  .login-container input {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
   .login-container button {
-    width: 100%;
-    padding: 12px;
-    background-color: #FF5722;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
     font-size: 16px;
-    transition: background-color 0.3s;
   }
-  
-  .login-container button:hover {
-    background-color: #D84315;
-  }
-  
+}
