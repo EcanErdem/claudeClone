@@ -123,7 +123,7 @@ const MainApp = () => {
         <>
          
           <div className="projects-list">
-            <h2>Projeler</h2>
+            <h2>Sohbetler</h2>
             <div className="projects-container">
               {projects.map((project) => (
                 <div
@@ -144,7 +144,7 @@ const MainApp = () => {
             </div>
 
             
-            <button onClick={handleAddProjectClick} className="add-project-button">Yeni Proje Ekle</button>
+            <button onClick={handleAddProjectClick} className="add-project-button">Yeni Sohbet Ekle</button>
 
             
             {isAddingProject && (
