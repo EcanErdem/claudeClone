@@ -11,7 +11,7 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(135deg, #FF6F61, #D84315);
+  background: linear-gradient(135deg, #607D8B, #455A64); /* Gri-mavi tonları */
   font-family: 'Poppins', sans-serif;
 }
 
@@ -34,29 +34,30 @@ body {
 .login-container h1 {
   margin-bottom: 20px;
   font-size: 24px;
-  color: #333;
+  color: #333; /* Koyu gri tonunda başlık */
 }
 
 .login-container input {
   width: 100%;
   padding: 12px;
   margin: 10px 0;
-  border: 1px solid #ddd;
+  border: 1px solid #B0BEC5; /* Gri tonlarında border */
   border-radius: 8px;
   font-size: 16px;
   transition: all 0.3s ease;
+  background-color: #F5F5F5; /* Hafif gri arka plan */
 }
 
 .login-container input:focus {
-  border-color: #FF5722;
+  border-color: #3f51b5; /* Mavi renk odaklanma durumu */
   outline: none;
-  box-shadow: 0 0 8px rgba(255, 87, 34, 0.5);
+  box-shadow: 0 0 8px rgba(63, 81, 181, 0.5); /* Mavi renk ile odaklanma efekti */
 }
 
 .login-container button {
   width: 100%;
   padding: 12px;
-  background: #FF5722;
+  background: #3f51b5; /* Mavi tonunda buton */
   color: white;
   border: none;
   border-radius: 8px;
@@ -67,7 +68,7 @@ body {
 }
 
 .login-container button:hover {
-  background: #D84315;
+  background: #303f9f; /* Daha koyu mavi hover rengi */
 }
 
 /* Responsive Tasarım */

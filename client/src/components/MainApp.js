@@ -4,52 +4,51 @@ import ChatContainer from './ChatContainer';
 import InputBox from './InputBox';
 import '../App.css';
 import { useDispatch, useSelector } from 'react-redux';
-import {setAllChats,setCurrentChatMessages} from "../state"
-//import SignUp from '../src/components/SignupPage';
-//import Login from './components/LoginPage';
+import { setAllChats, setCurrentChatMessages } from "../state";
 
 const MainApp = () => {
-  const token = useSelector((state)=>state.token)
-  const user = useSelector((state)=>state.user)
+  const token = useSelector((state) => state.token);
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.allChats);
   const projectMessages = useSelector((state) => state.projectMessages);
   const [selectedProjectId, setSelectedProjectId] = useState(null); // Seçilen proje id
-  const isAuth = Boolean(useSelector((state)=>state.token))
+  const isAuth = Boolean(useSelector((state) => state.token));
 
-  const getProjects = async () =>{
-    const response = await fetch(`http://localhost:3001/chat/allChat?user=${user._id}`,{
-      method:"GET",
-      headers:{Authorization:`Bearer ${token}`}
-    })
+  const [searchTerm, setSearchTerm] = useState(''); // Arama terimi state'i
+  const [filteredProjects, setFilteredProjects] = useState(projects); // Filtrelenmiş projeler
+  const [newProjectName, setNewProjectName] = useState(''); // Yeni proje adı
+  const [isAddingProject, setIsAddingProject] = useState(false); // Yeni proje eklenip eklenmediği durumu
+
+  const getProjects = async () => {
+    const response = await fetch(`http://localhost:3001/chat/allChat?user=${user._id}`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` }
+    });
     const data = await response.json();
     dispatch(setAllChats(data));
+    setFilteredProjects(data); // Projeleri filtreleme için set et
     console.log(data);
-  }
+  };
 
-  useEffect(()=>{
-    if(isAuth){
+  useEffect(() => {
+    if (isAuth) {
       getProjects();
     }
-  },[]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    // Arama terimi değiştiğinde projeleri filtrele
+    setFilteredProjects(
+      projects.filter(project =>
+        project.chatTitle.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+  }, [searchTerm, projects]);
 
   const selectedProject = projects.find(project => project.chatUrl === selectedProjectId); // Seçilen projeyi bulma
 
   const [isChatStarted, setIsChatStarted] = useState(false);
-  /* const [projects, setProjects] = useState([
-    { id: 1, name: 'Konuşma 1', description: 'Burda açıklama kısmı koyabiliriz' },
-    { id: 2, name: 'Konuşma 2', description: 'Burda açıklama kısmı koyabiliriz' },
-    { id: 3, name: 'Proje', description: 'Burda açıklama kısmı koyabiliriz.' },
-    { id: 4, name: 'Araştırma 4', description: 'Burda açıklama kısmı koyabiliriz' },
-    { id: 5, name: 'Genel sohbet', description: 'Burda açıklama kısmı koyabiliriz' }
-  ]);
-   */
-
-  //Ben direk veri bulunsun yapıyı çalıştırırken diye statelerle yazdım Erdem
-  //const [projectMessages, setProjectMessages] = useState({}); // Projeler için mesaj tutma nesnesi
-  const [newProjectName, setNewProjectName] = useState(''); // Yeni proje
-  const [isAddingProject, setIsAddingProject] = useState(false); // Yeni proje eklemenin statei
 
   const startChat = () => {
     setIsChatStarted(true);
@@ -65,7 +64,7 @@ const MainApp = () => {
   };
 
   const handleAddProjectClick = () => {
-    setIsAddingProject(true); // Yeni proje ekleme ksımı
+    setIsAddingProject(true); // Yeni proje ekleme kısmı
   };
 
   const handleProjectNameChange = (e) => {
@@ -76,17 +75,16 @@ const MainApp = () => {
     if (newProjectName.trim() !== '') {
       const newProject = {
         chatTitle: newProjectName,
-        user:user._id
+        user: user._id
       };
-      const newProjectResponse = await fetch("http://localhost:3001/chat/newChat",
-      {
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json",
-          Authorization:`Bearer ${token}`
+      const newProjectResponse = await fetch("http://localhost:3001/chat/newChat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
         },
-        body:JSON.stringify(newProject)
-      })
+        body: JSON.stringify(newProject)
+      });
       const newProjectAll = await newProjectResponse.json();
       getProjects();
     }
@@ -97,20 +95,17 @@ const MainApp = () => {
     setIsAddingProject(false);
   };
 
-  //proje silme
-  
   const handleDeleteProject = async (projectUrl) => {
-    const response = await fetch(`http://localhost:3001/chat/deleteChat?chatUrl=${projectUrl}`,{
-      method:"DELETE",
-      headers:{
-        Authorization:`Bearer ${token}`
+    const response = await fetch(`http://localhost:3001/chat/deleteChat?chatUrl=${projectUrl}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    })
+    });
     const newProjectAll = await response.json();
     getProjects();
   };
 
-  
   const handleInputBoxClick = async () => {
     await getProjects();
   };
@@ -121,11 +116,19 @@ const MainApp = () => {
         <WelcomePage onStartChat={startChat} />
       ) : (
         <>
-         
           <div className="projects-list">
-            <h2>Sohbetler</h2>
             <div className="projects-container">
-              {projects.map((project) => (
+              {/* Arama çubuğu */}
+              <div className="search-container">
+                <input
+                  type="text"
+                  placeholder="Sohbet Ara"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)} // Arama terimini güncelle
+                />
+              </div>
+
+              {filteredProjects.map((project) => (
                 <div
                   key={project.chatUrl}
                   onClick={() => selectProject(project.chatUrl)}
@@ -134,7 +137,7 @@ const MainApp = () => {
                   <h3>{project.chatTitle}</h3>
                   <p>{project.description}</p>
                   <button className="delete-button" onClick={(e) => {
-                    e.stopPropagation(); 
+                    e.stopPropagation();
                     handleDeleteProject(project.chatUrl);
                   }}>
                     Sil
@@ -143,10 +146,8 @@ const MainApp = () => {
               ))}
             </div>
 
-            
             <button onClick={handleAddProjectClick} className="add-project-button">Yeni Sohbet Ekle</button>
 
-            
             {isAddingProject && (
               <div className="add-project-form">
                 <input
@@ -160,23 +161,19 @@ const MainApp = () => {
               </div>
             )}
 
-{selectedProjectId && (
-            <div className="chat-container">
-              
-              <div className="project-title">
-                <h2>{selectedProject.chatTitle}</h2>
+            {selectedProjectId && (
+              <div className="chat-container">
+                <div className="project-title">
+                  <h2>{selectedProject.chatTitle}</h2>
+                </div>
+                <ChatContainer
+                  messages={getMessagesForProject(selectedProjectId)}  // Seçilen konuşmanın mesajları
+                  project={selectedProject}
+                />
+                <InputBox onSendMessage={selectedProjectId} onClick={handleInputBoxClick} />
               </div>
-              <ChatContainer
-                messages={getMessagesForProject(selectedProjectId)}  // Seçilen konuşmanın mesajları
-                project={selectedProject} 
-              />
-              <InputBox onSendMessage={selectedProjectId} onClick={handleInputBoxClick}/>
-            </div>
-          )}
+            )}
           </div>
-
-         
-          
         </>
       )}
     </div>

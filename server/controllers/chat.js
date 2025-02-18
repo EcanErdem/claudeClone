@@ -13,7 +13,7 @@ const anthropic = new Anthropic({
 const msg = async (messages) => {
    const response =  await anthropic.messages.create({
         model:"claude-3-5-haiku-20241022",
-        max_tokens: 100,
+        max_tokens: 6000,
         messages: messages
     })
     return response;

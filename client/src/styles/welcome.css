@@ -1,108 +1,113 @@
+/* Genel Stil */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #607D8B, #455A64); /* Gri tonları */
+  color: white;
+}
+
+/* Welcome Page */
 .welcome-page {
   height: 100vh;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: fixed; 
+  position: fixed;
   top: 0;
   left: 0;
-  background: linear-gradient(135deg, #FF5722, #FF7043); 
-  background-size: cover; 
-  background-position: center center; 
-  color: white;
+  background: linear-gradient(135deg, #3F51B5, #1E88E5); /* Mavi tonları */
+  background-size: cover;
+  background-position: center center;
   text-align: center;
-  overflow: hidden;
-  z-index: 0; 
+  z-index: 0;
 }
 
-
+/* İçerik Container */
 .welcome-page .welcome-content {
-  background: rgba(255, 255, 255, 0.85); 
+  background: rgba(255, 255, 255, 0.9); /* Hafif beyaz arka plan */
   border-radius: 20px;
   padding: 40px;
   max-width: 500px;
   width: 100%;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(15px); 
-  transform: scale(1);
+  backdrop-filter: blur(15px);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative; 
-  z-index: 1; /* İçeriği ön plana al */
+  z-index: 1;
 }
-
 
 .welcome-page .welcome-content:hover {
   transform: scale(1.05);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
 }
 
-
+/* Başlık */
 .welcome-page .welcome-content h1 {
   font-size: 2.5rem;
   margin-bottom: 15px;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
-  font-family: 'Arial', sans-serif;
-  color: #2C3E50; 
+  color: #2C3E50; /* Daha koyu ton */
 }
 
-
+/* Açıklama Yazısı */
 .welcome-page .welcome-content p {
   font-size: 1.1rem;
   margin-bottom: 30px;
   font-weight: 300;
-  color: #34495E; 
+  color: #34495E;
 }
 
-
+/* Başlangıç Butonu */
 .welcome-page .start-btn {
   padding: 14px 30px;
   font-size: 1.2rem;
-  background-color: white; 
-  color: #FF5722; 
+  background-color: white;
+  color: #3F51B5; /* Mavi buton */
   border: none;
   border-radius: 25px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease;
   text-transform: uppercase;
   font-weight: 500;
-  z-index: 2; 
 }
 
 .welcome-page .start-btn:hover {
-  background-color: #FF7043; 
-  color: white; 
+  background-color: #1E88E5; /* Koyu mavi */
+  color: white;
   transform: scale(1.05);
 }
 
-.welcome-page .start-btn:focus {
-  outline: none;
-}
-
-
+/* Opsiyonel Butonlar */
 .options-container {
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
   gap: 15px;
   position: absolute;
-  bottom: 20px; 
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
-  opacity: 0; /* Başlangıç gizli */
+  opacity: 0;
   transition: all 0.3s ease-out;
 }
 
+/* Hoverda opsiyonel butonları göster */
 .welcome-page .start-btn:hover + .options-container {
-  opacity: 1; 
-  transform: translateY(10px); 
+  opacity: 1;
+  transform: translateY(10px);
 }
 
+/* Opsiyonel Buton Stili */
 .option-box {
-  background: rgba(255, 255, 255, 0.9); 
+  background: rgba(255, 255, 255, 0.9);
   padding: 15px 30px;
   border-radius: 10px;
   cursor: pointer;
@@ -110,18 +115,18 @@
   text-align: center;
   transition: background-color 0.3s ease, transform 0.3s ease;
   font-weight: 500;
-  color: #FF5722; 
-  border: 2px solid #FF5722; 
+  color: #3F51B5;
+  border: 2px solid #3F51B5;
 }
 
 .option-box:hover {
-  background-color: #FF7043; 
-  color: white; 
-  transform: scale(1.05); 
-  border-color: #FF7043; 
+  background-color: #1E88E5;
+  color: white;
+  transform: scale(1.05);
+  border-color: #1E88E5;
 }
 
-/* Responsive kısım */
+/* Responsive Tasarım */
 @media (max-width: 768px) {
   .welcome-page .welcome-content {
     padding: 25px;
@@ -182,70 +187,32 @@
   }
 }
 
-
-.welcome-page {
+/* Hoverda ek butonları göster */
+.welcome-page:hover .additional-buttons {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background: linear-gradient(135deg, #FF5722, #FF7043); 
-  color: white;
-  text-align: center;
-  position: fixed;
-  transition: background-color 0.3s ease;
+  opacity: 1;
+  transform: translateY(0);
 }
 
-
-.welcome-content {
-  max-width: 400px;
-}
-
-.welcome-content h1 {
-  font-size: 48px;
-  margin-bottom: 20px;
-}
-
-.welcome-content p {
-  font-size: 18px;
-  margin-bottom: 30px;
-}
-
-
-.start-btn {
-  padding: 12px 25px;
-  font-size: 16px;
-  background-color: white; 
-  color: #FF5722; 
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.start-btn:hover {
-  background-color: #FF7043;
-  color: white; 
-}
-
-
+/* Ekstra Butonlar */
 .additional-buttons {
   margin-top: 20px;
   display: flex;
   gap: 10px;
   flex-direction: column;
   position: absolute;
-  bottom: 20px; /* Butonları sayfanın altına  */
+  bottom: 20px;
   opacity: 0;
   transform: translateY(15px);
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
+/* Giriş Butonları */
 .auth-button {
   padding: 12px 25px;
   font-size: 16px;
-  background-color: white; 
-  color: #FF5722; /* Beyaz arka plan turuncu yazı */
+  background-color: white;
+  color: #3F51B5;
   border: none;
   border-radius: 25px;
   cursor: pointer;
@@ -253,13 +220,6 @@
 }
 
 .auth-button:hover {
-  background-color: #FF7043;
+  background-color: #1E88E5;
   color: white;
-}
-
-
-.welcome-page:hover .additional-buttons {
-  display: flex;
-  opacity: 1;
-  transform: translateY(0); 
 }

@@ -1,45 +1,31 @@
-/* src/styles/inputBox.css */
 .input-box {
   display: flex;
   padding: 10px;
-  background-color: #FFFFFF; /* bewyaz */
-  border-top: 1px solid #FF7043; /* turuncu açık ton */
+  background-color: #ffffff;
+  border-top: 1px solid #B0BEC5;
   position: fixed;
   bottom: 0;
-  width: 100%;
+  width: 57%;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 30px; /* Yuvarlak köşeler için artırılmış değer */
 }
 
 .input-box input {
   flex: 1;
   padding: 12px 18px;
-  border-radius: 25px;
-  border: 1px solid #FF5722; /* turuncu */
+  border-radius: 30px; /* Aynı şekilde input'ın köşelerini de yuvarlak yapalım */
+  border: 1px solid #90A4AE;
   margin-right: 10px;
   font-size: 14px;
-}
-
-.input-box  input:disabled{
-  background-color: #FFAB91;
-  cursor: not-allowed;
+  background-color: #F5F5F5;
 }
 
 .input-box button {
-  background-color: #FF5722;
+  background-color: #607D8B;
   color: white;
   border: none;
   padding: 12px 18px;
-  border-radius: 25px;
+  border-radius: 30px; /* Butonun köşeleri de yuvarlak olacak şekilde */
   cursor: pointer;
   font-size: 14px;
-}
-
-.input-box button:disabled{
-  background-color: #FFAB91;
-  cursor: not-allowed;
-
-}
-
-.input-box button:hover {
-  background-color: #D84315; /* turuncu koyu */
 }

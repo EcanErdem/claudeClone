@@ -1,11 +1,11 @@
 /* Genel stil */
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f7fc;
+  font-family: 'Roboto', sans-serif;
+  background-color: #e0e0e0; /* Daha şık ve resmi bir gri ton */
   margin: 0;
   padding: 0;
   display: flex;
-  justify-content: center; /* Ortalamak için ekledik */
+  justify-content: center;
   align-items: center;
   min-height: 100vh;
 }
@@ -15,7 +15,7 @@ body {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 1200px; /* Uygulama genişliği maksimum 1200px */
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -24,52 +24,55 @@ body {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 600px;  /* Projeler kısmı ortalanmış ve genişliği sınırlandırılmış */
+  max-width: 800px; 
   margin-bottom: 30px;
 }
 
 .projects-container {
   display: flex;
-  flex-wrap: nowrap; /* Yatayda kaydırma */
+  flex-wrap: nowrap;
   gap: 15px;
-  overflow-x: auto; /* Yatay kaydırma çubuğu */
+  overflow-x: auto;
   padding: 10px;
   width: 100%;
 }
 
 .project-card {
   background-color: #ffffff;
-  padding: 20px;
+  padding: 15px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 200px;
+  width: 160px; /* Proje kartları küçültüldü */
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  flex-shrink: 0; /* Yatay kaydırmada kartın küçülmesini engeller */
-  min-width: 200px; /* Kartın minimum genişliği */
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease, background-color 0.3s ease;
+  flex-shrink: 0;
+  min-width: 160px;
 }
 
 .project-card:hover {
   transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  background-color: #f0f0f0; /* Hoverda daha açık gri */
 }
 
 .project-card.selected {
-  border: 2px solid #007bff;
+  border: 2px solid #3f51b5; /* Mavi tonları kullanıldı */
 }
 
 .project-card h3 {
   font-size: 16px;
   margin: 10px 0;
+  font-weight: 600;
+  color: #333; /* Başlık rengi koyulaştırıldı */
 }
 
 .project-card p {
   font-size: 14px;
-  color: #555;
+  color: #666; /* Metin rengi daha nötr hale getirildi */
 }
 
 .delete-button {
-  background-color: #f44336;
+  background-color: #9e9e9e; /* Kırmızı yerine gri tonları */
   color: white;
   padding: 5px 10px;
   border: none;
@@ -77,25 +80,27 @@ body {
   cursor: pointer;
   font-size: 12px;
   margin-top: 10px;
+  transition: background-color 0.3s ease;
 }
 
 .delete-button:hover {
-  background-color: #d32f2f;
+  background-color: #757575; /* Hoverda biraz koyu gri */
 }
 
 /* Yeni proje ekleme butonu */
 .add-project-button {
-  background-color: #4caf50;
+  background-color: #3f51b5; /* Mavi tonlarında */
   color: white;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  transition: background-color 0.3s ease;
 }
 
 .add-project-button:hover {
-  background-color: #388e3c;
+  background-color: #303f9f; /* Hoverda koyu mavi */
 }
 
 /* Yeni proje formu */
@@ -103,6 +108,7 @@ body {
   display: flex;
   gap: 10px;
   margin-top: 10px;
+  flex-wrap: wrap;
 }
 
 .add-project-form input {
@@ -111,6 +117,7 @@ body {
   border-radius: 5px;
   border: 1px solid #ccc;
   width: 200px;
+  margin-bottom: 10px;
 }
 
 .add-project-form button {
@@ -122,14 +129,48 @@ body {
 }
 
 .add-project-form button:nth-child(1) {
-  background-color: #4caf50;
+  background-color: #3f51b5;
   color: white;
 }
 
 .add-project-form button:nth-child(2) {
-  background-color: #f44336;
+  background-color: #9e9e9e;
   color: white;
 }
+/* Arama kutusu için stil */
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px; /* Arama kutusu ile projeler arasında boşluk */
+  width: 100%;
+}
+
+.search-container input {
+  width: 100%;
+  max-width: 400px; /* Arama kutusunun genişliği */
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+.search-container button {
+  background-color: #3f51b5;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.search-container button:hover {
+  background-color: #303f9f; /* Hoverda koyu mavi */
+}
+
 
 .add-project-form button:hover {
   opacity: 0.8;
@@ -142,24 +183,25 @@ body {
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  max-width: 900px; 
+  max-width: 900px;
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  overflow-y: auto; /*mesaj gelince kayması için */
-  overflow-x: hidden;
-  height: 500px; 
+  overflow-y: auto;
+  height: 600px; /* Sohbet kutusu boyutunu biraz daha büyüttük */
+  padding: 20px;
 }
 
 .project-title {
   width: 100%;
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .project-title h2 {
   font-size: 24px;
   font-weight: bold;
+  color: #333;
 }
 
 /* Mesajlar */
@@ -173,6 +215,7 @@ body {
 
 .chat-container .message.user {
   margin-right: 15px;
+  width: 25%;
   align-items: flex-end;
 }
 
@@ -186,18 +229,19 @@ body {
   margin: 5px 0;
   padding: 10px;
   border-radius: 8px;
-  background-color: #fff;
+  background-color: #f9f9f9; /* Mesajların arka planı daha nötr gri */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   max-width: 80%;
 }
 
 .message.user p {
-  background-color: #4caf50;
+  background-color: #3f51b5; /* Kullanıcı mesajları için mavi tonları */
   color: white;
+  max-width: 80%;
 }
 
-.message.bot p {
-  background-color: #f1f1f1;
+.message.assistant p {
+  background-color: #e0e0e0; /* Asistan mesajları için gri */
   color: #333;
 }
 
@@ -218,28 +262,119 @@ body {
 }
 
 .input-box button {
-  background-color: #007bff;
+  background-color: #3f51b5;
   color: white;
   padding: 10px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .input-box button:hover {
-  background-color: #0056b3;
+  background-color: #303f9f;
 }
-
 
 .projects-container::-webkit-scrollbar {
   height: 8px;
 }
 
 .projects-container::-webkit-scrollbar-thumb {
-  background-color: #007bff;
+  background-color: #3f51b5;
   border-radius: 10px;
 }
 
 .projects-container::-webkit-scrollbar-track {
-  background-color: #f4f7fc;
+  background-color: #e0e0e0;
+}
+
+/* "Yazıyor..." animasyonu */
+.typing-indicator {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  color: #888;
+  animation: typingAnimation 1.5s infinite; /* Yazma animasyonu */
+  font-weight: 500;
+}
+
+@keyframes typingAnimation {
+  0% {
+    content: "Yazıyor.";
+  }
+  33% {
+    content: "Yazıyor..";
+  }
+  66% {
+    content: "Yazıyor...";
+  }
+}
+
+/* Responsive Stil */
+@media (max-width: 1200px) {
+  .projects-list {
+    max-width: 90%;
+  }
+  .project-card {
+    width: 150px; /* Proje kartları daha da küçültüldü */
+  }
+  .add-project-form input, .add-project-form button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .projects-container {
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .project-card {
+    width: 130px; /* Kartlar daha küçük */
+    min-width: 130px;
+  }
+
+  .add-project-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .add-project-form input {
+    width: 100%;
+  }
+
+  .chat-container {
+    height: 450px; /* Sohbet kutusunun boyutunu iyileştirdik */
+  }
+}
+
+@media (max-width: 480px) {
+  .project-card {
+    width: 110px;
+    min-width: 110px;
+  }
+
+  .add-project-form {
+    flex-direction: column;
+  }
+
+  .add-project-form input {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .input-box input {
+    width: 70%;
+  }
+
+  .input-box button {
+    width: 25%;
+  }
+
+  .chat-container {
+    height: 400px;
+  }
 }
