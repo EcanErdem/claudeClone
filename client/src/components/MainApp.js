@@ -19,6 +19,7 @@ const MainApp = () => {
   const [filteredProjects, setFilteredProjects] = useState(projects); // Filtrelenmiş projeler
   const [newProjectName, setNewProjectName] = useState(''); // Yeni proje adı
   const [isAddingProject, setIsAddingProject] = useState(false); // Yeni proje eklenip eklenmediği durumu
+  const [isThinking, setIsThinking] = useState(false);
 
   const getProjects = async () => {
     const response = await fetch(`http://localhost:3001/chat/allChat?user=${user._id}`, {
@@ -64,7 +65,10 @@ const MainApp = () => {
   };
 
   const handleAddProjectClick = () => {
-    setIsAddingProject(true); // Yeni proje ekleme kısmı
+    setIsAddingProject(!isAddingProject); // Toggle form visibility
+    if (isAddingProject) { // If we're closing the form, clear the input
+      setNewProjectName('');
+    }
   };
 
   const handleProjectNameChange = (e) => {
@@ -107,7 +111,9 @@ const MainApp = () => {
   };
 
   const handleInputBoxClick = async () => {
+    setIsThinking(true);
     await getProjects();
+    setIsThinking(false);
   };
 
   return (
@@ -117,17 +123,16 @@ const MainApp = () => {
       ) : (
         <>
           <div className="projects-list">
-            <div className="projects-container">
-              {/* Arama çubuğu */}
-              <div className="search-container">
-                <input
-                  type="text"
-                  placeholder="Sohbet Ara"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)} // Arama terimini güncelle
-                />
-              </div>
+            <div className="search-container">
+              <input
+                type="text"
+                placeholder="Sohbet Ara"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
 
+            <div className="projects-container">
               {filteredProjects.map((project) => (
                 <div
                   key={project.chatUrl}
@@ -135,7 +140,6 @@ const MainApp = () => {
                   className={`project-card ${selectedProjectId === project.chatUrl ? 'selected' : ''}`}
                 >
                   <h3>{project.chatTitle}</h3>
-                  <p>{project.description}</p>
                   <button className="delete-button" onClick={(e) => {
                     e.stopPropagation();
                     handleDeleteProject(project.chatUrl);
@@ -146,34 +150,57 @@ const MainApp = () => {
               ))}
             </div>
 
-            <button onClick={handleAddProjectClick} className="add-project-button">Yeni Sohbet Ekle</button>
+            <div className="new-chat-section">
+              <button 
+                onClick={handleAddProjectClick} 
+                className={`add-project-button ${isAddingProject ? 'active' : ''}`}
+              >
+                <span>Yeni Sohbet Ekle</span>
+                <svg className="toggle-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M19 9L12 16L5 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
 
-            {isAddingProject && (
-              <div className="add-project-form">
-                <input
-                  type="text"
-                  placeholder="Yeni sohbet ismini girin."
-                  value={newProjectName}
-                  onChange={handleProjectNameChange}
-                />
-                <button onClick={handleAddProject}>Ekle</button>
-                <button onClick={handleCancelAddProject}>İptal</button>
-              </div>
-            )}
-
-            {selectedProjectId && (
-              <div className="chat-container">
-                <div className="project-title">
-                  <h2>{selectedProject.chatTitle}</h2>
+              {isAddingProject && (
+                <div className="add-project-form">
+                  <input
+                    type="text"
+                    placeholder="Yeni sohbet ismini girin."
+                    value={newProjectName}
+                    onChange={handleProjectNameChange}
+                  />
+                  <div className="form-buttons">
+                    <button onClick={handleAddProject}>Ekle</button>
+                    <button onClick={handleCancelAddProject}>İptal</button>
+                  </div>
                 </div>
-                <ChatContainer
-                  messages={getMessagesForProject(selectedProjectId)}  // Seçilen konuşmanın mesajları
-                  project={selectedProject}
-                />
-                <InputBox onSendMessage={selectedProjectId} onClick={handleInputBoxClick} />
-              </div>
-            )}
+              )}
+            </div>
           </div>
+
+          {selectedProjectId ? (
+            <div className="chat-container">
+              <div className="project-title">
+                <h2>{selectedProject.chatTitle}</h2>
+              </div>
+              <ChatContainer
+                messages={getMessagesForProject(selectedProjectId)}
+                projectName={selectedProject.chatTitle}
+                isThinking={isThinking}
+              />
+              <InputBox 
+                onSendMessage={selectedProjectId} 
+                onClick={handleInputBoxClick}
+                setIsThinking={setIsThinking}
+              />
+            </div>
+          ) : (
+            <div className="chat-container">
+              <div className="empty-chat">
+                <h2>Sohbet başlatmak için sol menüden bir sohbet seçin veya yeni bir sohbet oluşturun.</h2>
+              </div>
+            </div>
+          )}
         </>
       )}
     </div>

@@ -6,9 +6,9 @@
   border-radius: 8px;
   font-size: 14px;
   word-wrap: break-word;
-  background-color: #E1F5FE; /* Açık mavi - Bot mesajları için */
+  /* Açık mavi - Bot mesajları için -- background-color: #E1F5FE; -- */
   color: #333; /* Metin rengi koyulaştırıldı */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Hafif gölge */
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); -- Hafif gölge */
 }
 
 .message.bot {
@@ -17,7 +17,7 @@
 }
 
 .message.user {
-  background-color: #B0BEC5; /* Koyu mavi - Kullanıcı mesajları için */
+  /* background-color: #B0BEC5; /* Koyu mavi - Kullanıcı mesajları için */
   color: white; /* Kullanıcı mesajları için beyaz metin */
   align-self: flex-end;
 }

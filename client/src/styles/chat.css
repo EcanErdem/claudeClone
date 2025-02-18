@@ -4,59 +4,71 @@ body {
   background-color: #e0e0e0; /* Daha şık ve resmi bir gri ton */
   margin: 0;
   padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   min-height: 100vh;
+  min-width: 100vw;
+  overflow: hidden;
 }
 
-/* Projeler Listesi */
+/* Ana uygulama container'ı */
 .App {
   display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
 }
 
+/* Sidebar stil */
 .projects-list {
+  width: 300px;
+  height: 100vh;
+  background-color: #f5f5f5;
+  border-right: 1px solid #e0e0e0;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 800px; 
-  margin-bottom: 30px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  overflow-y: auto;
+  z-index: 10;
 }
 
 .projects-container {
   display: flex;
-  flex-wrap: nowrap;
-  gap: 15px;
-  overflow-x: auto;
-  padding: 10px;
-  width: 100%;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: calc(100vh - 180px);
 }
 
 .project-card {
   background-color: #ffffff;
-  padding: 15px;
+  padding: 12px;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 160px; /* Proje kartları küçültüldü */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease, background-color 0.3s ease;
-  flex-shrink: 0;
-  min-width: 160px;
+  transition: background-color 0.2s ease;
+  width: auto;
+  min-width: auto;
+  margin: 0;
 }
 
 .project-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-  background-color: #f0f0f0; /* Hoverda daha açık gri */
+  background-color: #f0f0f0;
+  transform: none;
 }
 
 .project-card.selected {
-  border: 2px solid #3f51b5; /* Mavi tonları kullanıldı */
+  background-color: #e3f2fd;
+  border: 1px solid #2196f3;
 }
 
 .project-card h3 {
@@ -87,205 +99,263 @@ body {
   background-color: #757575; /* Hoverda biraz koyu gri */
 }
 
-/* Yeni proje ekleme butonu */
-.add-project-button {
-  background-color: #3f51b5; /* Mavi tonlarında */
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-}
-
-.add-project-button:hover {
-  background-color: #303f9f; /* Hoverda koyu mavi */
-}
-
-/* Yeni proje formu */
-.add-project-form {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-  flex-wrap: wrap;
-}
-
-.add-project-form input {
-  padding: 10px;
-  font-size: 14px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  width: 200px;
-  margin-bottom: 10px;
-}
-
-.add-project-form button {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.add-project-form button:nth-child(1) {
-  background-color: #3f51b5;
-  color: white;
-}
-
-.add-project-form button:nth-child(2) {
-  background-color: #9e9e9e;
-  color: white;
-}
-/* Arama kutusu için stil */
-.search-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 20px; /* Arama kutusu ile projeler arasında boşluk */
-  width: 100%;
-}
-
-.search-container input {
-  width: 100%;
-  max-width: 400px; /* Arama kutusunun genişliği */
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  margin-right: 10px;
-}
-
-.search-container button {
-  background-color: #3f51b5;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
-}
-
-.search-container button:hover {
-  background-color: #303f9f; /* Hoverda koyu mavi */
-}
-
-
-.add-project-form button:hover {
-  opacity: 0.8;
-}
-
-/* Chatbox */
+/* Chat container yeni stil */
 .chat-container {
+  margin-left: 300px;
+  width: calc(100% - 300px);
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  max-width: 900px;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: #f0f2f5;
+  position: relative;
+  overflow: hidden;
+}
+
+.messages-container {
+  flex: 1;
   overflow-y: auto;
-  height: 600px; /* Sohbet kutusu boyutunu biraz daha büyüttük */
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: calc(100vh - 140px);
+}
+
+.messages-container:empty {
+  flex: 1;
+  height: 100%;
 }
 
 .project-title {
-  width: 100%;
-  text-align: center;
-  margin-bottom: 20px;
+  padding: 16px 20px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
 .project-title h2 {
-  font-size: 24px;
-  font-weight: bold;
+  margin: 0;
+  font-size: 20px;
   color: #333;
 }
 
 /* Mesajlar */
-.chat-container .message {
-  margin: 10px 0;
+.message {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  max-width: 100%;
+  max-width: 80%;
+  gap: 4px;
 }
 
-.chat-container .message.user {
-  margin-right: 15px;
-  width: 25%;
-  align-items: flex-end;
+.message.user {
+  align-self: flex-end;
 }
 
-.chat-container .message.assistant {
-  margin-left: 15px;
-  width: 100%;
-  align-items: flex-start;
+.message.assistant {
+  align-self: flex-start;
 }
 
 .message p {
-  margin: 5px 0;
-  padding: 10px;
-  border-radius: 8px;
-  background-color: #f9f9f9; /* Mesajların arka planı daha nötr gri */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  max-width: 80%;
+  margin: 0;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 .message.user p {
-  background-color: #3f51b5; /* Kullanıcı mesajları için mavi tonları */
+  background-color: #2196f3;
   color: white;
-  max-width: 80%;
+  border-bottom-right-radius: 4px;
 }
 
 .message.assistant p {
-  background-color: #e0e0e0; /* Asistan mesajları için gri */
+  background-color: #ffffff;
   color: #333;
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-/* Mesaj kutusu */
-.input-box {
+/* Empty chat state */
+.empty-chat {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-height: calc(100vh - 140px);
   width: 100%;
-  max-width: 900px;
-  justify-content: space-between;
-  padding: 10px;
+  padding: 20px;
+  text-align: center;
+  background-color: #f0f2f5;
 }
 
-.input-box input {
-  width: 85%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+.empty-chat h2 {
+  color: #666;
+  font-size: 18px;
+  font-weight: normal;
+  max-width: 500px;
+  line-height: 1.5;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.input-box button {
-  background-color: #3f51b5;
+/* Arama kutusu */
+.search-container {
+  padding: 16px;
+  border-bottom: 1px solid #e0e0e0;
+  background-color: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.search-container input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Yeni sohbet bölümü */
+.new-chat-section {
+  position: sticky;
+  bottom: 0;
+  background-color: #f5f5f5;
+  padding: 16px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.add-project-button {
+  background-color: #2196f3;
   color: white;
-  padding: 10px;
+  padding: 12px 24px;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.input-box button:hover {
-  background-color: #303f9f;
+.add-project-button .toggle-icon {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.2s ease;
 }
 
+.add-project-button.active .toggle-icon {
+  transform: rotate(180deg);
+}
+
+.add-project-button:hover {
+  background-color: #1976d2;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.add-project-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-project-form {
+  margin-top: 12px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  animation: slideDown 0.2s ease-out;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.add-project-form input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.add-project-form input:focus {
+  outline: none;
+  border-color: #2196f3;
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+}
+
+.form-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+.form-buttons button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  min-width: 100px;
+}
+
+.form-buttons button:first-child {
+  background-color: #2196f3;
+  color: white;
+}
+
+.form-buttons button:last-child {
+  background-color: #e0e0e0;
+  color: #666;
+}
+
+.form-buttons button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.form-buttons button:active {
+  transform: translateY(0);
+}
+
+/* Scroll bar stilleri */
 .projects-container::-webkit-scrollbar {
-  height: 8px;
+  width: 8px;
+  height: 0;
 }
 
 .projects-container::-webkit-scrollbar-thumb {
-  background-color: #3f51b5;
-  border-radius: 10px;
+  background-color: #bdbdbd;
+  border-radius: 4px;
 }
 
 .projects-container::-webkit-scrollbar-track {
-  background-color: #e0e0e0;
+  background-color: transparent;
 }
 
 /* "Yazıyor..." animasyonu */
@@ -376,5 +446,49 @@ body {
 
   .chat-container {
     height: 400px;
+  }
+}
+
+/* Düşünme göstergesi */
+.thinking-message {
+  padding: 12px 16px;
+  max-width: 100px !important;
+}
+
+.thinking-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #ffffff;
+  padding: 12px 24px;
+  border-radius: 12px;
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.thinking-indicator .dot {
+  width: 8px;
+  height: 8px;
+  background-color: #2196f3;
+  border-radius: 50%;
+  animation: bounce 1.4s infinite ease-in-out;
+}
+
+.thinking-indicator .dot:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.thinking-indicator .dot:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+    opacity: 0.4;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
   }
 }

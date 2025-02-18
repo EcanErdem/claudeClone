@@ -2,28 +2,29 @@ import React, { useState } from 'react';
 import '../styles/inputBox.css';
 import { useSelector } from 'react-redux';
 
-const InputBox = ({ onSendMessage,onClick }) => {
+const InputBox = ({ onSendMessage, onClick, setIsThinking }) => {
   const [message, setMessage] = useState('');
-  const [isSending,setIsSending] = useState(false);
-  const token = useSelector((state)=>state.token)
+  const [isSending, setIsSending] = useState(false);
+  const token = useSelector((state) => state.token);
 
-
-  const handleSend =  async () => {
+  const handleSend = async () => {
     if (message.trim()) {
       setIsSending(true);
-      const response = await fetch("http://localhost:3001/chat/",{
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json",
-          Authorization:`Bearer ${token}`
+      setIsThinking(true);
+      const response = await fetch("http://localhost:3001/chat/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
         },
-        body:JSON.stringify({chatUrl:onSendMessage,userMessage:message})
-      })
-      if(response.ok){
+        body: JSON.stringify({ chatUrl: onSendMessage, userMessage: message })
+      });
+      if (response.ok) {
         setMessage('');
-        onClick();
+        await onClick();
       }
       setIsSending(false);
+      setIsThinking(false);
     }
   };
 
@@ -38,11 +39,14 @@ const InputBox = ({ onSendMessage,onClick }) => {
       <input
         type="text"
         placeholder="Bana mesaj yaz!"
-        value={message} disabled={isSending}
+        value={message}
+        disabled={isSending}
         onChange={(e) => setMessage(e.target.value)}
         onKeyPress={handleKeyPress}
       />
-      <button onClick={handleSend} disabled={isSending} >Gönder</button>
+      <button onClick={handleSend} disabled={isSending}>
+        {isSending ? 'Gönderiliyor...' : 'Gönder'}
+      </button>
     </div>
   );
 };

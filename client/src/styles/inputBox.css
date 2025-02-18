@@ -1,31 +1,68 @@
 .input-box {
   display: flex;
-  padding: 10px;
+  padding: 20px;
   background-color: #ffffff;
-  border-top: 1px solid #B0BEC5;
-  position: fixed;
+  border-top: 1px solid #e0e0e0;
+  position: sticky;
   bottom: 0;
-  width: 57%;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 30px; /* Yuvarlak köşeler için artırılmış değer */
+  left: 0;
+  right: 0;
+  z-index: 10;
+  gap: 12px;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .input-box input {
   flex: 1;
-  padding: 12px 18px;
-  border-radius: 30px; /* Aynı şekilde input'ın köşelerini de yuvarlak yapalım */
-  border: 1px solid #90A4AE;
-  margin-right: 10px;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
   font-size: 14px;
-  background-color: #F5F5F5;
+  background-color: #f8f9fa;
+  transition: all 0.2s ease;
+}
+
+.input-box input:focus {
+  outline: none;
+  border-color: #2196f3;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+}
+
+.input-box input:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
 }
 
 .input-box button {
-  background-color: #607D8B;
+  background-color: #2196f3;
   color: white;
   border: none;
-  padding: 12px 18px;
-  border-radius: 30px; /* Butonun köşeleri de yuvarlak olacak şekilde */
+  padding: 16px 28px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  min-width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input-box button:hover:not(:disabled) {
+  background-color: #1976d2;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.input-box button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.input-box button:disabled {
+  background-color: #e0e0e0;
+  cursor: not-allowed;
+  transform: none;
 }
