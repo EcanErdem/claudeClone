@@ -50,6 +50,19 @@
   justify-content: center;
 }
 
+select {
+  padding: 0 10px;
+  border-radius: 8px;
+  font-weight: 500;
+  border: 1px solid #e0e0e0;
+  font-size: 14px;
+  background-color: #042a49;
+  appearance: none;
+  color:white;
+  transition: all 0.2s ease;
+  width:"max-content";
+}
+
 .input-box button:hover:not(:disabled) {
   background-color: #1976d2;
   transform: translateY(-1px);
