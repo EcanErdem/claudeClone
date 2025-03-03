@@ -20,32 +20,22 @@ Content-Type: application/json
 
 POST http://localhost:3001/chat/newChat
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTMxZjUxYWYzMjQ5OTVkYWFmZDcwZCIsImlhdCI6MTczODc1Nzc3NX0.1Ub2D0fs7ef6wLJtuEmQ1YVf_jRCHJ8hdH8bVV6ZRFE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTMxZjUxYWYzMjQ5OTVkYWFmZDcwZCIsImlhdCI6MTc0MDk5MDgxNX0.Xoojh3heaPg8uKoFv3dTH2HIbYcLSj89CfNLy7UOU5E
 
-{
-    "userMessage": "Merhaba, nasılsınız?"
-}
 
 ###
 
 GET http://localhost:3001/chat?chatUrl=da8db0ac0fb17c636f864a149dbc793e8db2998d
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTMxZjUxYWYzMjQ5OTVkYWFmZDcwZCIsImlhdCI6MTczODc1Nzc3NX0.1Ub2D0fs7ef6wLJtuEmQ1YVf_jRCHJ8hdH8bVV6ZRFE
-
-###
-POST http://localhost:3001/chat?chatUrl=da8db0ac0fb17c636f864a149dbc793e8db2998d
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTMxZjUxYWYzMjQ5OTVkYWFmZDcwZCIsImlhdCI6MTczODc0NDk0Mn0.haE6nZ6Q5HAdT7_1Kk7Q2ewpOgqcHTTexAu8bIcz3hY
-Content-Type: application/json
-
-{
-    "userMessage": "Ben de iyiyim. Teşekkür Ederim."
-}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTMxZjUxYWYzMjQ5OTVkYWFmZDcwZCIsImlhdCI6MTc0MDk5MDgxNX0.Xoojh3heaPg8uKoFv3dTH2HIbYcLSj89CfNLy7UOU5E
 
 
 ###
-POST http://localhost:3001/chat?chatUrl=da8db0ac0fb17c636f864a149dbc793e8db2998d
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTMxZjUxYWYzMjQ5OTVkYWFmZDcwZCIsImlhdCI6MTczODc1Nzc3NX0.1Ub2D0fs7ef6wLJtuEmQ1YVf_jRCHJ8hdH8bVV6ZRFE
+POST http://localhost:3001/chat
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTMxZjUxYWYzMjQ5OTVkYWFmZDcwZCIsImlhdCI6MTc0MDk5MDgxNX0.Xoojh3heaPg8uKoFv3dTH2HIbYcLSj89CfNLy7UOU5E
 Content-Type: application/json
 
 {
-    "userMessage": "16+20-1000*56%43/2*4 kaç eder?"
+    "chatUrl": "71c7f35752397674ed15585a750340d32be6018e",
+    "userMessage": "Merhaba Bugün günlerden ne? Bana Bunu söyler misin?",
+    "version":"claude-3-5-haiku-20241022"
 }

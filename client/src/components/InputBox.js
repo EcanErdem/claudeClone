@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import '../styles/inputBox.css';
 import { useSelector } from 'react-redux';
+import { claudeVersion } from '../constants';
 
 const InputBox = ({ onSendMessage, onClick, setIsThinking }) => {
   const [message, setMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
+  const [selectedVersion, setSelectedVersion] = useState("claude-3-5-haiku-20241022");
+
   const token = useSelector((state) => state.token);
 
   const handleSend = async () => {
+    console.log(selectedVersion)
     if (message.trim()) {
       setIsSending(true);
       setIsThinking(true);
@@ -17,7 +21,7 @@ const InputBox = ({ onSendMessage, onClick, setIsThinking }) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({ chatUrl: onSendMessage, userMessage: message })
+        body: JSON.stringify({ chatUrl: onSendMessage, userMessage: message,version:selectedVersion})
       });
       if (response.ok) {
         setMessage('');
@@ -34,6 +38,10 @@ const InputBox = ({ onSendMessage, onClick, setIsThinking }) => {
     }
   };
 
+  const handleVersionChange = (e) => {
+    setSelectedVersion(e.target.value);
+  };
+
   return (
     <div className="input-box">
       <input
@@ -47,6 +55,13 @@ const InputBox = ({ onSendMessage, onClick, setIsThinking }) => {
       <button onClick={handleSend} disabled={isSending}>
         {isSending ? 'Gönderiliyor...' : 'Gönder'}
       </button>
+      <select style={{borderRadius:".5em"}} name="claudeVersion" id="claudeVersion" value={selectedVersion} onChange={handleVersionChange}>
+        {claudeVersion.map((version) => (
+          <option key={version.id} value={version.id}>
+            {version.name}
+          </option>
+        ))}
+      </select>
     </div>
   );
 };

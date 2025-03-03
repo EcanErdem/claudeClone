@@ -29,7 +29,6 @@ const MainApp = () => {
     const data = await response.json();
     dispatch(setAllChats(data));
     setFilteredProjects(data); // Projeleri filtreleme için set et
-    console.log(data);
   };
 
   useEffect(() => {
@@ -75,10 +74,8 @@ const MainApp = () => {
     setNewProjectName(e.target.value); // Kullanıcının yazdığı proje ismi
   };
 
-  const handleAddProject = async () => {
-    if (newProjectName.trim() !== '') {
+  const handleAddProject = async () => {   
       const newProject = {
-        chatTitle: newProjectName,
         user: user._id
       };
       const newProjectResponse = await fetch("http://localhost:3001/chat/newChat", {
@@ -90,8 +87,9 @@ const MainApp = () => {
         body: JSON.stringify(newProject)
       });
       const newProjectAll = await newProjectResponse.json();
-      getProjects();
-    }
+      await getProjects();
+      selectProject(newProjectAll.chatUrl);
+      
   };
 
   const handleCancelAddProject = () => {
@@ -100,6 +98,17 @@ const MainApp = () => {
   };
 
   const handleDeleteProject = async (projectUrl) => {
+    if(selectedProjectId === projectUrl){
+      selectProject(null);
+      /* if(projects.length>1){
+        const projectIndex = projects.findIndex(project => project.chatUrl === projectUrl);
+        projectIndex !==0 ? selectProject(projects[projectIndex-1].chatUrl) : selectProject(projects[projectIndex+1].chatUrl);
+      }
+      else{
+        selectProject(null);
+      }*/
+    }
+    
     const response = await fetch(`http://localhost:3001/chat/deleteChat?chatUrl=${projectUrl}`, {
       method: "DELETE",
       headers: {
@@ -152,8 +161,8 @@ const MainApp = () => {
 
             <div className="new-chat-section">
               <button 
-                onClick={handleAddProjectClick} 
-                className={`add-project-button ${isAddingProject ? 'active' : ''}`}
+                onClick={()=> handleAddProject()} 
+                className={`add-project-button`}
               >
                 <span>Yeni Sohbet Ekle</span>
                 <svg className="toggle-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -161,20 +170,7 @@ const MainApp = () => {
                 </svg>
               </button>
 
-              {isAddingProject && (
-                <div className="add-project-form">
-                  <input
-                    type="text"
-                    placeholder="Yeni sohbet ismini girin."
-                    value={newProjectName}
-                    onChange={handleProjectNameChange}
-                  />
-                  <div className="form-buttons">
-                    <button onClick={handleAddProject}>Ekle</button>
-                    <button onClick={handleCancelAddProject}>İptal</button>
-                  </div>
-                </div>
-              )}
+        
             </div>
           </div>
 
