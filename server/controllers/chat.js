@@ -59,7 +59,23 @@ export const newMessage = async (req,res)=>{
             const chatTitle = await msg([{role:"user",content:`Yazıcağım metin için içeriği en iyi yansıtan kısa bir başlık önerir misin? Cevabın sadece başlığı içersin ve başka bir şey yazılı olmasın : ${req.body.userMessage}`}],"claude-3-5-haiku-20241022");
             chat.chatTitle = chatTitle.content[0].text;
         }
-        chat.messages.push({role:"user", content:req.body.userMessage});
+        const isIncludeImage = req.body.isIncludeImage;
+        if(isIncludeImage){
+            chat.messages.push({role:"user",content: [
+                {
+                  "type": "image",
+                  "source": {
+                    "type": "base64",
+                    "media_type": "image/jpeg",
+                    "data": "/9j/4AAQSkZJRg...",
+                  }
+                },
+                {"type": "text", "text": req.body.userMessage}
+              ]
+            });
+        }else{
+            chat.messages.push({role:"user", content:[{"type":"text","text":req.body.userMessage}]});
+        }
         const response = await msg(chat.messages.map(({role,content})=>({role,content})),req.body.version); 
         chat.messages.push({role:"assistant", content:response.content[0].text});
         await chat.save();
