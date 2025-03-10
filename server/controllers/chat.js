@@ -3,7 +3,21 @@ import User from '../modules/User.js';
 import crypto from 'crypto';
 import Anthropic from '@anthropic-ai/sdk';
 import dotenv from 'dotenv';
+import { format } from 'path';
+import multer from 'multer';
+import fs from "fs";
 dotenv.config();
+
+const storage = multer.diskStorage({
+    destination: function (req,file,cb){
+        cb(null,"uploads/")
+    },
+    filename: function(req,file,cb){
+        cb(null,Date.now() + path.extname(file.originalname))
+    }
+})
+
+const upload = multer({storage:storage})
 
 
 const anthropic = new Anthropic({
@@ -13,7 +27,7 @@ const anthropic = new Anthropic({
 const msg = async (messages,version) => {
    const response =  await anthropic.messages.create({
         model:version,//claude-3-5-haiku-20241022
-        max_tokens: 6000,
+        max_tokens: 7000,
         messages: messages
     })
     return response;
@@ -52,15 +66,52 @@ export const getAllChat = async (req,res)=>{
     }
 }
 
+export const newMessageWithImage = async(req,res)=>{
+    try{
+        const chat = await Chat.findOne({chatUrl:req.body.chatUrl}).lean()
+        const imageBuffer = fs.readFileSync(req.file.path);
+        const base64Image = imageBuffer.toString("base64");
+        chat.messages.push({role:"user",content: [
+            {
+              "type": "image",
+              "source": {
+                "type": "base64",
+                "media_type": req.file.mimetype,
+                "data": base64Image,
+              }
+            },
+            {"type": "text", "text": req.body.userMessage}
+          ]
+        });
+        fs.unlink(req.file.path,(err)=>{
+            if(err) console.log(err);
+        });
+        const formattedMessages = chat.messages.map(({ role, content }) => ({
+            role,
+            content: Array.isArray(content)
+                ? content.map(({ _id, id,filePath, ...rest }) => rest) // `_id` ve `id` alanlarını kaldır
+                : [{ ...content, _id: undefined, id: undefined }]
+        }));
+       const response = await msg(formattedMessages,req.body.version);
+        chat.messages.push({role:"assistant", content:response.content[0]});
+        await Chat.replaceOne({chatUrl:req.body.chatUrl},chat);
+        res.status(200).json(chat);
+    }catch(err){
+        console.log(err)
+        res.status(500).json({err:err.message});
+    }
+}
+
 export const newMessage = async (req,res)=>{
     try{
-        const chat = await Chat.findOne({chatUrl:req.body.chatUrl});
+        const chat = await Chat.findOne({chatUrl:req.body.chatUrl}).lean()
+        console.log(req.body.userMessage)
         if(chat.messages.length==0){
             const chatTitle = await msg([{role:"user",content:`Yazıcağım metin için içeriği en iyi yansıtan kısa bir başlık önerir misin? Cevabın sadece başlığı içersin ve başka bir şey yazılı olmasın : ${req.body.userMessage}`}],"claude-3-5-haiku-20241022");
             chat.chatTitle = chatTitle.content[0].text;
         }
-        const isIncludeImage = req.body.isIncludeImage;
-        if(isIncludeImage){
+
+        /*if(isIncludeImage){
             chat.messages.push({role:"user",content: [
                 {
                   "type": "image",
@@ -75,13 +126,22 @@ export const newMessage = async (req,res)=>{
             });
         }else{
             chat.messages.push({role:"user", content:[{"type":"text","text":req.body.userMessage}]});
-        }
-        const response = await msg(chat.messages.map(({role,content})=>({role,content})),req.body.version); 
-        chat.messages.push({role:"assistant", content:response.content[0].text});
-        await chat.save();
+        }*/
+        chat.messages.push({ role: "user", content: [{ "type": "text", "text": req.body.userMessage }] });
+        
+        const formattedMessages = chat.messages.map(({ role, content }) => ({
+            role,
+            content: Array.isArray(content)
+                ? content.map(({ _id, id, ...rest }) => rest) // `_id` ve `id` alanlarını kaldır
+                : [{ ...content, _id: undefined, id: undefined }]
+        }));
+       const response = await msg(formattedMessages,req.body.version);
+        chat.messages.push({role:"assistant", content:response.content[0]});
+        await Chat.replaceOne({chatUrl:req.body.chatUrl},chat);
         res.status(200).json(chat);
     }
     catch(err){
+        console.log(err)
         res.status(500).json({err:err.message});
     }
 }

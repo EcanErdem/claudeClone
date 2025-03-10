@@ -7,6 +7,8 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import path from 'path';
 import Anthropic from '@anthropic-ai/sdk';
+import multer from 'multer';
+import fs from "fs"
 import authRoutes from './routes/auth.js';
 import chatRoutes from './routes/chat.js';
 
@@ -20,6 +22,8 @@ app.use(morgan('common'));
 app.use(bodyParser.json({limit: '50mb',extended: true}));
 app.use(bodyParser.urlencoded({limit: '50mb',extended: true}));
 app.use(cors());
+
+
 
 
 app.use("/auth",authRoutes)

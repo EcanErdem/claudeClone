@@ -60,7 +60,20 @@ const MainApp = () => {
 
   const getMessagesForProject = (projectUrl) => {
     const currentProject = projects.find(project => project.chatUrl === projectUrl);
-    return currentProject.messages // Seçilen projenin mesajlarını çek
+    return currentProject.messages.map(messages => ({
+      role: messages.role,
+      content: messages.content.map(item=>{
+        const {text} = item
+        return text;
+
+      }),
+      image: messages.content.map(item=>{
+        if(item.type !== "image") return null;
+        const img = `data:${item.source.media_type};base64,${item.source.data}`;
+        return img;
+      })
+     
+    })) // Seçilen projenin mesajlarını çek
   };
 
   const handleAddProjectClick = () => {

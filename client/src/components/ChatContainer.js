@@ -31,7 +31,7 @@ const ChatContainer = ({ messages, projectName, isThinking }) => {
         </div>
       )}
       {messages.map((msg, index) => (
-        <Message key={index} text={msg.content} sender={msg.role} />
+        <Message key={index} text={msg.content} image={msg.image} sender={msg.role} />
       ))}
       {isThinking && (
         <div className="message assistant thinking-message">
