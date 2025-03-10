@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMicrophoneAlt, faMicrophoneAltSlash } from '@fortawesome/free-solid-svg-icons'; // Mikrofon ikonları
 import '../styles/inputBox.css';
 import { useSelector } from 'react-redux';
 import { claudeVersion } from '../constants';
@@ -10,8 +12,51 @@ const InputBox = ({ onSendMessage, onClick, setIsThinking }) => {
 
   const token = useSelector((state) => state.token);
 
+  const [isListening, setIsListening] = useState(false);
+  const [recognition, setRecognition] = useState(null);
+
+  // Sesli giriş için API'yi başlatan fonksiyon
+  const startListening = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert('Tarayıcınız bu özelliği desteklemiyor.');
+      return;
+    }
+
+    const newRecognition = new SpeechRecognition();
+    newRecognition.lang = 'tr-TR'; // Türkçe dil desteği
+    newRecognition.continuous = true; // Sürekli dinleme
+    newRecognition.interimResults = true; // Geçici sonuçları da al
+
+    newRecognition.onstart = () => {
+      setIsListening(true);
+    };
+
+    newRecognition.onend = () => {
+      setIsListening(false);
+    };
+
+    newRecognition.onresult = (event) => {
+      let transcript = '';
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        transcript += event.results[i][0].transcript;
+      }
+      setMessage(transcript); // Sesle yazılan metni input'a set ediyoruz
+    };
+
+    newRecognition.start(); // Dinlemeye başlıyoruz
+    setRecognition(newRecognition); // Recognition objesini saklıyoruz
+  };
+
+  // Dinlemeyi durdurma fonksiyonu
+  const stopListening = () => {
+    if (recognition) {
+      recognition.stop(); // Ses tanımayı durduruyoruz
+    }
+  };
+
+  // Sesli mesaj gönderme işlemi
   const handleSend = async () => {
-    console.log(selectedVersion)
     if (message.trim()) {
       setIsSending(true);
       setIsThinking(true);
@@ -21,7 +66,7 @@ const InputBox = ({ onSendMessage, onClick, setIsThinking }) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({ chatUrl: onSendMessage, userMessage: message,version:selectedVersion})
+        body: JSON.stringify({ chatUrl: onSendMessage, userMessage: message, version: selectedVersion })
       });
       if (response.ok) {
         setMessage('');
@@ -52,16 +97,29 @@ const InputBox = ({ onSendMessage, onClick, setIsThinking }) => {
         onChange={(e) => setMessage(e.target.value)}
         onKeyPress={handleKeyPress}
       />
+      {/* Mikrofon ikonu butonu */}
+      <button
+        onClick={isListening ? stopListening : startListening}
+        disabled={isSending}
+        style={{ border: 'none', background: 'transparent' }}
+      >
+        <FontAwesomeIcon
+          icon={isListening ? faMicrophoneAltSlash : faMicrophoneAlt}
+          style={{ fontSize: '30px', color: isListening ? 'red' : 'black' }}
+        />
+      </button>
       <button onClick={handleSend} disabled={isSending}>
         {isSending ? 'Gönderiliyor...' : 'Gönder'}
       </button>
-      <select style={{borderRadius:".5em"}} name="claudeVersion" id="claudeVersion" value={selectedVersion} onChange={handleVersionChange}>
+      <select style={{ borderRadius: ".5em" }} name="claudeVersion" id="claudeVersion" value={selectedVersion} onChange={handleVersionChange}>
         {claudeVersion.map((version) => (
           <option key={version.id} value={version.id}>
             {version.name}
           </option>
         ))}
       </select>
+
+      
     </div>
   );
 };
