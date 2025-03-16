@@ -3,6 +3,7 @@ import WelcomePage from './WelcomePage';
 import ChatContainer from './ChatContainer';
 import InputBox from './InputBox';
 import '../App.css';
+import '../styles/chat.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAllChats, setCurrentChatMessages } from "../state";
 
@@ -12,13 +13,14 @@ const MainApp = () => {
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.allChats);
   const projectMessages = useSelector((state) => state.projectMessages);
-  const [selectedProjectId, setSelectedProjectId] = useState(null); // Seçilen proje id
+  const [selectedProjectId, setSelectedProjectId] = useState(null); 
+  const [sidebarOpen, setSidebarOpen] = useState(false); // Sidebar durumu
   const isAuth = Boolean(useSelector((state) => state.token));
 
-  const [searchTerm, setSearchTerm] = useState(''); // Arama terimi state'i
-  const [filteredProjects, setFilteredProjects] = useState(projects); // Filtrelenmiş projeler
-  const [newProjectName, setNewProjectName] = useState(''); // Yeni proje adı
-  const [isAddingProject, setIsAddingProject] = useState(false); // Yeni proje eklenip eklenmediği durumu
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredProjects, setFilteredProjects] = useState(projects);
+  const [newProjectName, setNewProjectName] = useState('');
+  const [isAddingProject, setIsAddingProject] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
 
   const getProjects = async () => {
@@ -28,17 +30,16 @@ const MainApp = () => {
     });
     const data = await response.json();
     dispatch(setAllChats(data));
-    setFilteredProjects(data); // Projeleri filtreleme için set et
+    setFilteredProjects(data);
   };
 
   useEffect(() => {
     if (isAuth) {
       getProjects();
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
-    // Arama terimi değiştiğinde projeleri filtrele
     setFilteredProjects(
       projects.filter(project =>
         project.chatTitle.toLowerCase().includes(searchTerm.toLowerCase())
@@ -46,7 +47,7 @@ const MainApp = () => {
     );
   }, [searchTerm, projects]);
 
-  const selectedProject = projects.find(project => project.chatUrl === selectedProjectId); // Seçilen projeyi bulma
+  const selectedProject = projects.find(project => project.chatUrl === selectedProjectId);
 
   const [isChatStarted, setIsChatStarted] = useState(false);
 
@@ -63,70 +64,53 @@ const MainApp = () => {
     return currentProject.messages.map(messages => ({
       role: messages.role,
       content: messages.content.map(item=>{
-        const {text} = item
+        const {text} = item;
         return text;
-
       }),
       image: messages.content.map(item=>{
         if(item.type !== "image") return null;
         const img = `data:${item.source.media_type};base64,${item.source.data}`;
         return img;
       })
-     
-    })) // Seçilen projenin mesajlarını çek
+    }));
   };
 
   const handleAddProjectClick = () => {
-    setIsAddingProject(!isAddingProject); // Toggle form visibility
-    if (isAddingProject) { // If we're closing the form, clear the input
+    setIsAddingProject(!isAddingProject);
+    if (isAddingProject) {
       setNewProjectName('');
     }
   };
 
   const handleProjectNameChange = (e) => {
-    setNewProjectName(e.target.value); // Kullanıcının yazdığı proje ismi
+    setNewProjectName(e.target.value);
   };
 
-  const handleAddProject = async () => {   
-      const newProject = {
-        user: user._id
-      };
-      const newProjectResponse = await fetch("http://localhost:3001/chat/newChat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(newProject)
-      });
-      const newProjectAll = await newProjectResponse.json();
-      await getProjects();
-      selectProject(newProjectAll.chatUrl);
-      
+  const handleAddProject = async () => {
+    const newProject = { user: user._id };
+    const newProjectResponse = await fetch("http://localhost:3001/chat/newChat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify(newProject)
+    });
+    const newProjectAll = await newProjectResponse.json();
+    await getProjects();
+    selectProject(newProjectAll.chatUrl);
   };
 
   const handleCancelAddProject = () => {
-    setNewProjectName(''); // Proje adını boşa set etme
+    setNewProjectName('');
     setIsAddingProject(false);
   };
 
   const handleDeleteProject = async (projectUrl) => {
     if(selectedProjectId === projectUrl){
       selectProject(null);
-      /* if(projects.length>1){
-        const projectIndex = projects.findIndex(project => project.chatUrl === projectUrl);
-        projectIndex !==0 ? selectProject(projects[projectIndex-1].chatUrl) : selectProject(projects[projectIndex+1].chatUrl);
-      }
-      else{
-        selectProject(null);
-      }*/
     }
     
     const response = await fetch(`http://localhost:3001/chat/deleteChat?chatUrl=${projectUrl}`, {
       method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      headers: { Authorization: `Bearer ${token}` }
     });
     const newProjectAll = await response.json();
     getProjects();
@@ -138,13 +122,30 @@ const MainApp = () => {
     setIsThinking(false);
   };
 
+  // Fare sol kenara geldiğinde sidebar'ı açma
+  const handleMouseMove = (e) => {
+    if (e.clientX < 50 && !sidebarOpen) {
+      setSidebarOpen(true);  // Sidebar'ı aç
+    } else if (e.clientX > 200 && sidebarOpen) {
+      setSidebarOpen(false);  // Sidebar'ı kapat
+    }
+  };
+
+  // Mouse hareketlerini dinle
+  useEffect(() => {
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [sidebarOpen]);
+
   return (
     <div className="App">
       {!isChatStarted ? (
         <WelcomePage onStartChat={startChat} />
       ) : (
         <>
-          <div className="projects-list">
+          <div className={`projects-list ${sidebarOpen ? 'open' : 'closed'}`}>
             <div className="search-container">
               <input
                 type="text"
@@ -162,28 +163,26 @@ const MainApp = () => {
                   className={`project-card ${selectedProjectId === project.chatUrl ? 'selected' : ''}`}
                 >
                   <h3>{project.chatTitle}</h3>
-                  <button className="delete-button" onClick={(e) => {
-                    e.stopPropagation();
-                    handleDeleteProject(project.chatUrl);
-                  }}>
-                    Sil
+                  <button 
+                    className="delete-button" 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteProject(project.chatUrl);
+                    }}
+                  >
+                    <i className="fas fa-trash-alt"></i>
                   </button>
                 </div>
               ))}
             </div>
 
             <div className="new-chat-section">
-              <button 
-                onClick={()=> handleAddProject()} 
-                className={`add-project-button`}
-              >
+              <button onClick={()=> handleAddProject()} className={`add-project-button`}>
                 <span>Yeni Sohbet Ekle</span>
                 <svg className="toggle-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M19 9L12 16L5 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </button>
-
-        
             </div>
           </div>
 

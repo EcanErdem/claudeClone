@@ -12,7 +12,7 @@ const InputBox = ({ onSendMessage, onClick, setIsThinking }) => {
 
   const token = useSelector((state) => state.token);
 
-  const [file,setFile] = useState(null);
+  const [file, setFile] = useState(null);
   const [isListening, setIsListening] = useState(false);
   const [recognition, setRecognition] = useState(null);
 
@@ -59,30 +59,29 @@ const InputBox = ({ onSendMessage, onClick, setIsThinking }) => {
   // Sesli mesaj gönderme işlemi
   const handleSend = async () => {
     if (message.trim()) {
-      if(file !== null){
-
-      const formData =  new FormData();
-      formData.append('image',file);
-      formData.append('userMessage',message);
-      formData.append('version',selectedVersion);
-      formData.append('chatUrl',onSendMessage);
-      setIsSending(true);
-      setIsThinking(true);
-      const response = await fetch("http://localhost:3001/chat/upload/",{
-        method:"POST",
-        headers:{
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData
-      });
-      if(response.ok){
-        setMessage('');
-        setFile(null);
-        await onClick();
-      }
-      setIsSending(false);
-      setIsThinking(false);
-    }else{
+      if (file !== null) {
+        const formData = new FormData();
+        formData.append('image', file);
+        formData.append('userMessage', message);
+        formData.append('version', selectedVersion);
+        formData.append('chatUrl', onSendMessage);
+        setIsSending(true);
+        setIsThinking(true);
+        const response = await fetch("http://localhost:3001/chat/upload/", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData
+        });
+        if (response.ok) {
+          setMessage('');
+          setFile(null);
+          await onClick();
+        }
+        setIsSending(false);
+        setIsThinking(false);
+      } else {
         setIsSending(true);
         setIsThinking(true);
         const response = await fetch("http://localhost:3001/chat/", {
@@ -109,9 +108,8 @@ const InputBox = ({ onSendMessage, onClick, setIsThinking }) => {
     }
   };
 
-  const handleFileChange = (e) =>{
+  const handleFileChange = (e) => {
     setFile(e.target.files[0]);
-    console.log(file)
   }
 
   const handleVersionChange = (e) => {
@@ -139,7 +137,22 @@ const InputBox = ({ onSendMessage, onClick, setIsThinking }) => {
           style={{ fontSize: '30px', color: isListening ? 'red' : 'black' }}
         />
       </button>
-      <input type='file' id='file' onChange={handleFileChange} className='inputFile' accept='image/*' />
+
+      {/* Ataç simgesi ve dosya yükleme */}
+      <label htmlFor="file-upload" className="attach-icon" style={{ cursor: 'pointer', fontSize: '24px' }}>
+        📎
+      </label>
+      <input
+        type="file"
+        id="file-upload"
+        onChange={handleFileChange}
+        style={{ display: 'none' }} // Dosya inputu gizleniyor
+        accept="image/*"
+      />
+
+      {/* Yüklenen dosya adı */}
+      {file && <div className="file-info">Yüklenen dosya: {file.name}</div>}
+
       <button onClick={handleSend} disabled={isSending}>
         {isSending ? 'Gönderiliyor...' : 'Gönder'}
       </button>
@@ -150,8 +163,6 @@ const InputBox = ({ onSendMessage, onClick, setIsThinking }) => {
           </option>
         ))}
       </select>
-
-      
     </div>
   );
 };

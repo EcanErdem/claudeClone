@@ -1,0 +1,14 @@
+{
+    "loginTitle": "Giriş Yap",
+    "emailPlaceholder": "E-posta adresinizi girin",
+    "passwordPlaceholder": "Parolanızı girin",
+    "loginButton": "Giriş Yap",
+    "signupTitle": "Kayıt Ol",
+    "signupButton": "Kayıt Ol",
+    "homePageTitle": "Ana Sayfaya Hoş Geldiniz",
+    "logoutButton": "Çıkış Yap",
+    "error": {
+      "loginFailed": "Giriş başarısız. Lütfen kimlik bilgilerinizi kontrol edin."
+    }
+  }
+  

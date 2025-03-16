@@ -1,7 +1,7 @@
 /* Genel stil */
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: #e0e0e0; 
+  background-color: #e0e0e0; /* Daha şık ve resmi bir gri ton */
   margin: 0;
   padding: 0;
   min-height: 100vh;
@@ -14,6 +14,8 @@ body {
   display: flex;
   width: 100vw;
   height: 100vh;
+  margin: 0;
+  padding: 0;
   position: fixed;
   top: 0;
   left: 0;
@@ -24,8 +26,8 @@ body {
 
 /* Sidebar stil */
 .projects-list {
-  width: 5px; /* Başlangıçta dar */
-  height: calc(100vh - 100px); 
+  width: 300px;
+  height: 100vh;
   background-color: #f5f5f5;
   border-right: 1px solid #e0e0e0;
   display: flex;
@@ -35,26 +37,15 @@ body {
   top: 0;
   overflow-y: auto;
   z-index: 10;
-  transition: width 0.3s ease;
 }
 
-
-/* Sidebar açıldığında genişlik */
-.projects-list.open {
-  width: 240px;
-}
-
-.projects-list:hover {
-  width: 240px; /* Fare sol kenara yaklaştığında açılacak genişlik */
-}
-
-/* Proje Kartları */
 .projects-container {
   display: flex;
   flex-direction: column;
   gap: 8px;
   padding: 16px;
   overflow-y: auto;
+  overflow-x: hidden;
   height: calc(100vh - 180px);
 }
 
@@ -67,10 +58,12 @@ body {
   transition: background-color 0.2s ease;
   width: auto;
   min-width: auto;
+  margin: 0;
 }
 
 .project-card:hover {
   background-color: #f0f0f0;
+  transform: none;
 }
 
 .project-card.selected {
@@ -90,25 +83,17 @@ body {
   color: #666;
 }
 
-/* Delete button icon */
-.delete-button i {
-  font-size: 16px; 
-  color: white; 
-}
-
 /* Chat container yeni stil */
 .chat-container {
-  
-  width: 100%;
+  width: calc(100% - 300px);
   height: 100vh;
   display: flex;
   flex-direction: column;
   background-color: #f0f2f5;
   position: relative;
-  transition: margin-left 0.3s ease;
+  overflow: hidden;
 }
 
-/* Chat container içerikleri */
 .messages-container {
   flex: 1;
   overflow-y: auto;
@@ -117,6 +102,11 @@ body {
   flex-direction: column;
   gap: 16px;
   min-height: calc(100vh - 140px);
+}
+
+.messages-container:empty {
+  flex: 1;
+  height: 100%;
 }
 
 .project-title {
@@ -290,7 +280,9 @@ body {
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   font-size: 14px;
+  transition: all 0.2s ease;
 }
+
 
 .add-project-form input:focus {
   outline: none;
@@ -328,6 +320,7 @@ body {
 
 .form-buttons button:hover {
   opacity: 0.9;
+  transform: translateY(-1px);
 }
 
 .form-buttons button:active {
@@ -337,11 +330,105 @@ body {
 /* Scroll bar stilleri */
 .projects-container::-webkit-scrollbar {
   width: 8px;
+  height: 0;
 }
 
 .projects-container::-webkit-scrollbar-thumb {
   background-color: #bdbdbd;
   border-radius: 4px;
+}
+
+.projects-container::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* "Yazıyor..." animasyonu */
+.typing-indicator {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  color: #888;
+  animation: typingAnimation 1.5s infinite; /* Yazma animasyonu */
+  font-weight: 500;
+}
+
+@keyframes typingAnimation {
+  0% {
+    content: "Yazıyor.";
+  }
+  33% {
+    content: "Yazıyor..";
+  }
+  66% {
+    content: "Yazıyor...";
+  }
+}
+
+/* Responsive Stil */
+@media (max-width: 1200px) {
+  .projects-list {
+    max-width: 90%;
+  }
+  .project-card {
+    width: 150px;
+  }
+  .add-project-form input, .add-project-form button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .projects-container {
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .project-card {
+    width: 130px;
+  }
+
+  .add-project-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .add-project-form input {
+    width: 100%;
+  }
+
+  .chat-container {
+    height: 450px;
+  }
+}
+
+@media (max-width: 480px) {
+  .project-card {
+    width: 110px;
+  }
+
+  .add-project-form {
+    flex-direction: column;
+  }
+
+  .add-project-form input {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .input-box input {
+    width: 70%;
+  }
+
+  .input-box button {
+    width: 25%;
+  }
+
+  .chat-container {
+    height: 400px;
+  }
 }
 
 /* Düşünme göstergesi */
@@ -377,70 +464,13 @@ body {
   animation-delay: -0.16s;
 }
 
-/* "Yazıyor..." animasyonu */
-.typing-indicator {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 14px;
-  color: #888;
-  animation: typingAnimation 1.5s infinite; 
-  font-weight: 500;
-}
-
-@keyframes typingAnimation {
-  0% {
-    content: "Yazıyor.";
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+    opacity: 0.4;
   }
-  33% {
-    content: "Yazıyor..";
-  }
-  66% {
-    content: "Yazıyor...";
-  }
-}
-
-/* Responsive Stil */
-@media (max-width: 1200px) {
-  .projects-list {
-    max-width: 90%;
-  }
-
-  .project-card {
-    width: 150px;
-  }
-
-  .add-project-form input, .add-project-form button {
-    width: 100%;
-  }
-}
-
-@media (max-width: 768px) {
-  .projects-container {
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-  }
-
-  .project-card {
-    width: 130px;
-  }
-
-  .chat-container {
-    height: 800px;
-  }
-  .projects-list {
-    height: 90%;
-  }
-}
-
-@media (max-width: 480px) {
-  .project-card {
-    width: 200px;
-  }
-
-  .chat-container {
-    height: 800px;
+  40% {
+    transform: scale(1);
+    opacity: 1;
   }
 }

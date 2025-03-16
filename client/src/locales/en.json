@@ -1,0 +1,14 @@
+{
+    "loginTitle": "Login",
+    "emailPlaceholder": "Enter your email",
+    "passwordPlaceholder": "Enter your password",
+    "loginButton": "Log In",
+    "signupTitle": "Sign Up",
+    "signupButton": "Sign Up",
+    "homePageTitle": "Welcome to the Home Page",
+    "logoutButton": "Log Out",
+    "error": {
+      "loginFailed": "Login failed. Please check your credentials."
+    }
+  }
+  
