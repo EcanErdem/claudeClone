@@ -9,6 +9,12 @@ const ChatContainer = ({ messages, projectName, isThinking }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const handleDoubleClick = (text) => {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'tr-TR'; // or 'tr-TR' for Turkish
+    speechSynthesis.speak(utterance);
+  };
+
   useEffect(() => {
     scrollToBottom();
   }, [messages, isThinking]);
@@ -31,7 +37,17 @@ const ChatContainer = ({ messages, projectName, isThinking }) => {
         </div>
       )}
       {messages.map((msg, index) => (
-        <Message key={index} text={msg.content} image={msg.image} sender={msg.role} />
+        <div
+          key={index}
+          onDoubleClick={() => handleDoubleClick(msg.content)} // Add double-click handler
+          className={`message ${msg.role === 'user' ? 'user' : 'assistant'}`} // Dynamically add class
+        >
+          <Message
+            text={msg.content}
+            image={msg.image}
+            sender={msg.role}
+          />
+        </div>
       ))}
       {isThinking && (
         <div className="message assistant thinking-message">
