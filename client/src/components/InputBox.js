@@ -139,7 +139,7 @@ const InputBox = ({ onSendMessage, onClick, setIsThinking }) => {
       </button>
 
       {/* Ataç simgesi ve dosya yükleme */}
-      <label htmlFor="file-upload" className="attach-icon" style={{ cursor: 'pointer', fontSize: '24px' }}>
+      <label htmlFor="file-upload" className="attach-icon" style={{ cursor: 'pointer', fontSize: '24px',display:"flex",justifyContent:"center",alignItems:"center" }}>
         📎
       </label>
       <input
@@ -151,7 +151,7 @@ const InputBox = ({ onSendMessage, onClick, setIsThinking }) => {
       />
 
       {/* Yüklenen dosya adı */}
-      {file && <div className="file-info">Yüklenen dosya: {file.name}</div>}
+      {file && <div className="file-info" style={{color:"black",display:"flex",justifyContent:"center",alignItems:"center" }}>Yüklenen dosya: {file.name}</div>}
 
       <button onClick={handleSend} disabled={isSending}>
         {isSending ? 'Gönderiliyor...' : 'Gönder'}
