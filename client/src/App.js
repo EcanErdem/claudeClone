@@ -4,8 +4,14 @@ import { useSelector } from "react-redux";
 import LoginPage  from "./components/LoginPage.js";
 import SignupPage  from "./components/SignupPage.js";
 
+
+
+
+
 function App(){
     const isAuth = Boolean(useSelector((state)=>state.token))
+
+    
 
     return(
         <BrowserRouter>
@@ -20,4 +26,5 @@ function App(){
 
 }
 
-export default App
+
+export default App;

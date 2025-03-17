@@ -1,36 +1,34 @@
 import React, { useState } from 'react';
 import '../styles/welcome.css';
 import { useSelector } from 'react-redux';
+import { withTranslation } from 'react-i18next';
+
 
 const WelcomePage = ({ onStartChat }) => {
+  
   const isAuth = Boolean(useSelector((state)=>state.token))
 
-  //const [showButtons, setShowButtons] = useState(false);
 
- /* const handleMouseEnter = () => {
-    setShowButtons(true);
-  };
-
-  const handleMouseLeave = () => {
-    setShowButtons(false);
-  }; */
 
   const handleLogin = () => {
-    window.location.href = '/login'; // Login sayfasına yönlendirme
+    window.location.href = '/login'; // Login sayfası
   };
 
 
   const handleSignup = () => {
-    window.location.href = '/signup'; // Signup sayfasına yönlendirme
+    window.location.href = '/signup'; // Signup sayfası
   };
 
+  
+  // const {t, i18n} = this.props; BU T FUNC KULLANMAK İÇİN GEREKEN CONST
   return (
     <div 
       className="welcome-page" 
     >
       <div className="welcome-content">
         <h1>Claude Clone</h1>
-        <p>Yapay zeka destekli sohbet deneyimi</p>
+        <p> Karşılama mesajı </p>
+     {/* * <p> {t('karşılama')}</p>  KULLANIM BÖYLE OLMALI */} 
         {isAuth && (
           <button className="start-btn" onClick={onStartChat}>Sohbete Başla</button>
         )} 
@@ -47,5 +45,6 @@ const WelcomePage = ({ onStartChat }) => {
   );
 };
 
+// export default withTranslation()(WelcomePage); BU DA ÇALIŞMASI İÇİN GEREKEN KAPANIŞ
 export default WelcomePage;
 
